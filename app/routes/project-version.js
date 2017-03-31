@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 export default Ember.Route.extend({
   projectService: Ember.inject.service('project'),
+  backgroundFetch: Ember.inject.service(),
 
   titleToken: function(model) {
     return model.get('version');
@@ -18,6 +19,8 @@ export default Ember.Route.extend({
 
   // Using redirect instead of afterModel so transition succeeds and returns 30
   redirect(model, transition) {
+    console.log('postMessage!');
+    this.get('backgroundFetch').fetchProjectVersionData(transition.params['project-version']);
     let classParams = transition.params['project-version.class'];
     let moduleParams = transition.params['project-version.module'];
     let namespaceParams = transition.params['project-version.namespace'];
